@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ServerInfo">
+	<resultMap type="ServerInfo" id="Server-Result">
+		<result property="id" column="id" javaType="Integer" />		
+		<result property="gameId" column="game_id" javaType="Integer" />		
+		<result property="serverName" column="server_name" javaType="String" />		
+	</resultMap>	
+	<select id="queryById" parameterType="Integer" resultMap="Server-Result">
+		select * from caijiayan_game_server_tb where id=#{id}  
+    </select>
+	<select id="queryListByGameId" parameterType="Integer" resultMap="Server-Result">
+		select * from caijiayan_game_server_tb
+		where game_id=#{game_id}
+    </select>    
+    
+     <insert id="insert" parameterType="ServerInfo">
+     insert into caijiayan_game_server_tb(game_id,server_name) values(#{gameId},#{serverName});     
+    </insert>
+
+    <update id="Update" parameterType="ServerInfo">
+    	update caijiayan_game_server_tb set game_id=#{gameId},server_name=#{serverName} where id=#{id};
+    </update>
+    
+    <delete id="Delete" parameterType="Integer">
+      delete from caijiayan_game_server_tb where id=#{id};
+    </delete>
+    
+</mapper> 

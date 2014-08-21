@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <title>Home</title>
+        <script type="text/javascript" src="resources/scripts/jquery-1.7.1.min.js"></script>
+    </head>
+    <body>
+        <h1>
+            游戏列表
+        </h1>
+        <P>
+            <label>游戏：</label>
+            <select id="selecteGame">
+                <option value="0">请选择游戏</option>
+                #foreach($item in $gameList)	
+                    <option value="$item.Id">$item.gameName</option>
+                #end
+            </select>
+			 <br>&nbsp;
+			
+			<table>
+				<tbody>
+                    <th>编号</th>
+                    <th>游戏</th>
+					<th>区服</th>
+                    <th>操作</th>
+					 #foreach($item in $serverList)	
+                        <tr>
+                            <td>$item.id</td>
+                            <td>$item.gameId</td>
+							<td>$item.serverName</td>
+							<td>
+								<a href="#" id="hfedit">编辑</a>
+                                <a href="#" id="hfdelete">删除</a>
+							</td>
+						</tr>
+					 #end
+					
+                </tbody>
+				
+            </table>			
+           
+        </P>
+		
+     <p>
+	 
+		我是华丽分割线  添加区服
+		
+		<br>&nbsp;<br>&nbsp;
+		
+		<label>游戏：</label>
+            <select id="selecteGames">
+                <option value="0">请选择游戏</option>
+                #foreach($item in $gameList)	
+                    <option value="$item.Id">$item.gameName</option>
+                #end
+            </select>
+			  <label>区服名：</label> <input id="txtServer" type="Text" ></input>
+			   <input id="btnAdd" type="button" value="添加" text="添加"></input>
+			</br>
+		
+	 
+	 </p>
+		
+        <script type="text/javascript">
+            jQuery(function(){
+			
+				$("#selecteGame").on("change",function(){
+				
+					location="/java?gameId="+$(this).val();
+				
+				});
+			
+                $("#selecteGame1").on("change",function(){
+				
+				jQuery.ajax({
+					url:"getServerListByGameId",
+					type:"get",
+					dataType:"json",
+					data:{gameId:$(this).val()},
+					success:function(data){
+						var strServer=''+'<option value="-1">请选择区服</option>';
+						for(var i in data){
+							strServer+='<option value="'+data[i]["id"]+'">'+data[i]["serverName"]+'</option>';							
+						}						
+						$("#selectServer").empty().html(strServer);
+					}
+				
+				});
+				
+				});				
+			
+				$("#btnAdd").on("click",function(){
+				
+					var serverName= $("#txtServer").val();
+					var gameId=$("#selecteGames").val();
+					
+					if(gameId>=1){
+						
+					}else
+					{
+						alert("请选择游戏！");
+						return false;
+					}
+					
+					if(serverName==''){
+						alert("请输入区服！");
+						return false;
+					}
+					
+					jQuery.ajax({
+					url:"insert",
+					type:"get",
+					dataType:"json",
+					data:{gameId:gameId,serverName:serverName},
+					success:function(data){
+						location=location;
+					}
+				
+				});
+					
+					
+				});
+				
+            });
+        </script>
+    </body>
+</html>
